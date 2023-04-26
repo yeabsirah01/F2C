@@ -1,0 +1,29 @@
+.input {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	position: relative;
+}
+
+.input > :is(input, select, textarea) {
+	padding: 0.75rem;
+	font-family: inherit;
+	font-size: 1rem;
+	border: 1px solid #b6b1cd;
+	border-radius: 0.25rem;
+	position: relative;
+	resize: none;
+	width: 100%;
+}
+
+.input > label {
+	font-weight: 500;
+}
+
+.error {
+	color: rgb(240, 35, 21);
+	font-size: 0.9rem;
+	font-style: italic;
+	position: absolute;
+	bottom: -1.3rem;
+}

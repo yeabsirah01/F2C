@@ -1,0 +1,17 @@
+.createProduct {
+	display: grid;
+	width: max-content;
+	grid-template-columns: 500px 800px;
+	margin-inline: auto;
+	padding: 2rem;
+	align-content: center;
+	gap: 4rem;
+	align-items: center;
+	height: 100%;
+}
+
+.createProduct h1 {
+	grid-column: span 2;
+	text-align: center;
+	color: var(--primary-color);
+}

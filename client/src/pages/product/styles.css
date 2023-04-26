@@ -1,0 +1,128 @@
+.productDetails {
+	display: grid;
+	grid-template-columns: 500px auto;
+	padding: 2rem;
+	align-items: stretch;
+	height: 100%;
+	gap: 4rem;
+	max-width: 1400px;
+	width: 95%;
+	margin-inline: auto;
+}
+
+.product__left {
+	position: sticky;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: auto 60px;
+	top: 2rem;
+	gap: 1rem;
+	height: 560px !important;
+}
+.product__image {
+	height: 100%;
+	overflow: hidden;
+	border-radius: 1rem;
+}
+
+.product__right {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.product__price {
+	color: var(--primary-color);
+	font-size: 1.75rem;
+}
+
+.product__name {
+	text-transform: uppercase;
+	color: var(--primary-color);
+	font-size: 3rem;
+	line-height: 1em;
+}
+
+.product__name span {
+	font-size: 0.9rem;
+	font-weight: 400;
+	color: white;
+	background-color: var(--primary-color);
+	padding: 0.3rem 1rem;
+	border-radius: 5rem;
+}
+
+.product__price span {
+	font-size: 1rem;
+	font-weight: 500;
+	display: inline-block;
+	color: var(--primary-color);
+	transform: translateY(-0.2em);
+}
+
+.product__description {
+	font-size: 1.1rem;
+	color: var(--primary-color);
+	font-weight: 500;
+	line-height: 1.8rem;
+}
+
+.product__rating {
+	display: flex;
+	align-items: center;
+	gap: 0.3rem;
+	background-color: var(--primary-color);
+	width: max-content;
+	padding: 0.2rem 0.75rem;
+	color: white;
+	border-radius: 5rem;
+}
+
+.sellerDetails {
+	font-size: 1.1rem;
+	line-height: 1.5em;
+	margin-top: 2rem;
+	color: var(--primary-color);
+}
+
+.reviewForm {
+	margin-top: 3rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	color: var(--primary-color);
+}
+
+.reviewStars {
+	font-size: 2rem;
+}
+
+.reviewStars svg {
+	cursor: pointer;
+}
+
+.reviews {
+	display: flex;
+	flex-direction: column;
+	margin-top: 2rem;
+}
+
+.review {
+	display: grid;
+	grid-template-columns: min-content auto;
+	gap: 1rem;
+	border-bottom: 1px solid #c6bfe6;
+	padding-block: 2rem;
+}
+
+.review__title {
+	font-weight: 500;
+	font-size: 1.3rem;
+}
+
+.review__text {
+	grid-column: span 2;
+	color: black;
+	font-size: 1.1rem;
+	line-height: 1.5rem;
+}
