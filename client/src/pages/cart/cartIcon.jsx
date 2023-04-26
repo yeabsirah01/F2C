@@ -7,6 +7,8 @@ import { useState } from "react";
 import { useContext } from "react";
 // import Product from "../../product.json";
 import Cart from "./indes";
+import { IconShoppingCart } from "@tabler/icons-react";
+import { useSelector } from "react-redux";
 
 function CartIcon() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,20 +17,23 @@ function CartIcon() {
   function cartClicked() {
     setIsModalOpen(true);
   }
-
+  const products = useSelector((state) => state.cart.products);
+  const x = products.length;
   // const count = Product.filter((product) => cartItems[product.id] !== 0).length;
   return (
     <>
-      <button onClick={cartClicked} style={{ position: "relative", right: 30 }}>
-        <Image maw={40} src="cartIcon.png" alt="cart" />
-        <Badge
-          variant="gradient"
-          color="red"
-          style={{ position: "absolute", top: -8, right: -22 }}
-        >
-          {2}
-        </Badge>
-      </button>
+      <div onClick={cartClicked} style={{ position: "relative", right: 30 }}>
+        <IconShoppingCart maw={40} name="shopping-cart" alt="cart" />
+        {x !== 0 && (
+          <Badge
+            variant="gradient"
+            color="red"
+            style={{ position: "absolute", top: -8, right: -22 }}
+          >
+            {x}
+          </Badge>
+        )}
+      </div>
       <div>{isModalOpen && <Cart onClose={() => setIsModalOpen(false)} />}</div>
     </>
   );

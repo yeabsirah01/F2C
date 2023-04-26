@@ -2,7 +2,7 @@ import { Menu, Text, Avatar } from "@mantine/core";
 import {
   IconSettings,
   IconSearch,
-  IconPhoto,
+  IconDashboard,
   IconMessageCircle,
   IconTrash,
   IconArrowsLeftRight,
@@ -11,10 +11,12 @@ import { logout } from "../../features/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function AvatarIcon() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { category, firstName } = useSelector((state) => state.user);
+  const { role, firstName } = useSelector((state) => state.user);
   return (
     <Menu shadow="md" width={200}>
       <Menu.Target>
@@ -31,9 +33,14 @@ function AvatarIcon() {
       <Menu.Dropdown>
         {/* <Menu.Label>{name}</Menu.Label> */}
         Hello {firstName}
+        <Menu.Item
+          icon={<IconDashboard size={14} />}
+          onClick={() => navigate("/dashboard")}
+        >
+          Dashboard
+        </Menu.Item>
         <Menu.Item icon={<IconSettings size={14} />}>Settings</Menu.Item>
         <Menu.Item icon={<IconMessageCircle size={14} />}>Messages</Menu.Item>
-        <Menu.Item icon={<IconPhoto size={14} />}>Gallery</Menu.Item>
         <Menu.Item
           icon={<IconSearch size={14} />}
           rightSection={
@@ -46,9 +53,11 @@ function AvatarIcon() {
         </Menu.Item>
         <Menu.Divider />
         <Menu.Label>Danger zone</Menu.Label>
-        <Menu.Item icon={<IconArrowsLeftRight size={14} />}>
-          Transfer my data
-        </Menu.Item>
+        {role === "Consumer" ? (
+          <Menu.Item icon={<IconArrowsLeftRight size={14} />}>
+            Upgrade to Farmer
+          </Menu.Item>
+        ) : null}
         <Menu.Item
           onClick={() => {
             dispatch(logout());

@@ -3,11 +3,25 @@
 // import "../styles/product-page.css";
 
 // import product from "../product.json";
-import Home from "../home";
+import React from "react";
+import { useState } from "react";
+import { useEffect } from "react";
+import axiosConfig from "../../axiosConfig";
+import ProductCards from "../../components/productCard";
+import "./style.css";
 
-import { Flex, ScrollArea, SimpleGrid } from "@mantine/core";
+const ProductsPage = () => {
+  const [products, setProducts] = useState([]);
 
-function ProductPage() {
-  return <Home />;
-}
-export default ProductPage;
+  useEffect(() => {
+    const getAllProducts = async () => {
+      const { data } = await axiosConfig.get("/products");
+      setProducts(data);
+    };
+    getAllProducts();
+  }, []);
+
+  return <ProductCards products={products} setProducts={setProducts} />;
+};
+
+export default ProductsPage;

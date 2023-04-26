@@ -11,12 +11,12 @@ import NavItem from "./navItem";
 import { useState } from "react";
 import { logout } from "../../features/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-const Layout = ({ children }) => {
+const Dashboard = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
-  const { category, name } = useSelector((state) => state.user);
+  const { role, firstName } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   return (
     <div className={isOpen ? "layout open" : "layout"}>
@@ -29,7 +29,7 @@ const Layout = ({ children }) => {
           )}
           <NavItem Icon={AiFillHome} label="Home" to="/" />
 
-          {category === "Farmer" && (
+          {role === "Farmer" && (
             <>
               <NavItem Icon={MdAddCircle} label="Create product" to="create" />
               <NavItem Icon={FaUserCircle} label="Profile" to="profile" />
@@ -51,10 +51,12 @@ const Layout = ({ children }) => {
             <SiShopify />
             <p>Shoplify</p>
           </div>
-          <p>Hi, {name}</p>
+          <p>Hi, {firstName}</p>
         </header>
         {children}
       </div>
     </div>
   );
 };
+
+export default Dashboard;

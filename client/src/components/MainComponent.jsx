@@ -15,6 +15,7 @@ import Product from "./../pages/product";
 import ProductPage from "./../pages/product/productsPage";
 import Login from "./../pages/auth/Loginn";
 import Header from "./layout/Header";
+import Dashboard from "../pages/Dashboard/Dashboard";
 
 function MainComponent() {
   const dispatch = useDispatch();
@@ -33,9 +34,10 @@ function MainComponent() {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/Products" element={<ProductPage />} />
-          <Route path="/create" element={<CreateProduct />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/dashboard/create" element={<CreateProduct />} />
+          <Route path="/dashboard/profile" element={<Profile />} />
           <Route path="/edit/:id" element={<EditProduct />} />
           <Route path="/:id" element={<Product />} />
           <Route path="/cart" element={<Cart />} />
