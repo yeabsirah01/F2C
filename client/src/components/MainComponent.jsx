@@ -16,8 +16,10 @@ import ProductPage from "./../pages/product/productsPage";
 import Login from "./../pages/auth/Loginn";
 import Header from "./layout/Header";
 import Dashboard from "../pages/Dashboard/Dashboard";
+import FarmerApplicationForm from "../pages/FarmerForm";
+import WaitlistTable from "./../pages/Dashboard/AdminDashoard/Waitlist";
 
-function MainComponent() {
+function MainComponent({ user }) {
   const dispatch = useDispatch();
   const { _id } = useSelector((state) => state.user);
   useEffect(() => {
@@ -34,10 +36,21 @@ function MainComponent() {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard/*" element={<Dashboard />}>
+            <Route path="create" element={<CreateProduct />} />
+            <Route path="wait" element={<WaitlistTable />} />
+            <Route path="profile" element={<Profile />} />
+          </Route>
+
+          {/* <Route path="/dashboard/create" element={<CreateProduct />} /> */}
+          <Route
+            path="/applyfarmer"
+            element={<FarmerApplicationForm user={user} />}
+          />
           <Route path="/Products" element={<ProductPage />} />
-          <Route path="/dashboard/create" element={<CreateProduct />} />
-          <Route path="/dashboard/profile" element={<Profile />} />
+          {/* <Route path="/dashboard/create" element={<CreateProduct />} />
+          <Route path="/dashboard/wait" element={<WaitlistTable />} />
+          <Route path="/dashboard/profile" element={<Profile />} /> */}
           <Route path="/edit/:id" element={<EditProduct />} />
           <Route path="/:id" element={<Product />} />
           <Route path="/cart" element={<Cart />} />

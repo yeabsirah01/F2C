@@ -54,7 +54,10 @@ function AvatarIcon() {
         <Menu.Divider />
         <Menu.Label>Danger zone</Menu.Label>
         {role === "Consumer" ? (
-          <Menu.Item icon={<IconArrowsLeftRight size={14} />}>
+          <Menu.Item
+            icon={<IconArrowsLeftRight size={14} />}
+            onClick={() => navigate("/applyfarmer")}
+          >
             Upgrade to Farmer
           </Menu.Item>
         ) : null}

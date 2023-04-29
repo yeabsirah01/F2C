@@ -33,6 +33,7 @@ app.use(function (req, res, next) {
 const authRouter = require("./routes/auth");
 const productRouter = require("./routes/product");
 const userRouter = require("./routes/user");
+const waitlistRouter = require("./routes/WaitlistRoute");
 
 //middle wares
 
@@ -56,6 +57,7 @@ app.use(express.static("public"));
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/products", productRouter);
+app.use("/api/v1/waitlist", waitlistRouter);
 app.use("/api/v1/users", authorizationMiddleware, userRouter);
 // authorizationMiddleware
 
