@@ -76,6 +76,7 @@ import {
 import { Route, Routes } from "react-router-dom";
 import CreateProduct from "./../../pages/createProduct/index";
 import Profile from "./../../pages/profile";
+import WaitlistTable from "./AdminDashoard/Waitlist";
 
 function Dashboard({ children }) {
   const { role, firstName } = useSelector((state) => state.user);
@@ -85,7 +86,7 @@ function Dashboard({ children }) {
   return (
     <AppShell
       navbar={
-        <Navbar width={{ base: 300 }} hiddenBreakpoint="sm" hidden={!opened}>
+        <Navbar width={{ base: 200 }} hiddenBreakpoint="sm" hidden={!opened}>
           {/* Navbar content */}
 
           <div className="sidebar">
@@ -104,11 +105,7 @@ function Dashboard({ children }) {
               )}
               {role === "Admin" && (
                 <>
-                  <NavItem
-                    Icon={MdAddCircle}
-                    label="Waitlist"
-                    to="dashboard/wait"
-                  />
+                  <NavItem Icon={MdAddCircle} label="Waitlist" to="waitlist" />
                 </>
               )}
               <NavItem Icon={FaShoppingCart} label="Cart" to="cart" />
@@ -123,16 +120,10 @@ function Dashboard({ children }) {
           </div>
         </Navbar>
       }
-      burger={<Burger opened={opened} onClick={() => setOpened(!opened)} />}
-      footer={
-        <Footer height={60} padding="md">
-          {/* Footer content */}
-        </Footer>
-      }
     >
       <Routes>
         <Route exact path="/create" element={<CreateProduct />}></Route>
-        <Route exact path="/waitlist" element={<CreateProduct />}></Route>
+        <Route exact path="/waitlist" element={<WaitlistTable />}></Route>
         <Route exact path="/profile" element={<Profile />}></Route>
       </Routes>
     </AppShell>

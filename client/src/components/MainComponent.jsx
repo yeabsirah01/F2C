@@ -16,7 +16,7 @@ import ProductPage from "./../pages/product/productsPage";
 import Login from "./../pages/auth/Loginn";
 import Header from "./layout/Header";
 import Dashboard from "../pages/Dashboard/Dashboard";
-import FarmerApplicationForm from "../pages/FarmerForm";
+import FarmerApplicationForm from "../pages/waitlist/FarmerForm";
 import WaitlistTable from "./../pages/Dashboard/AdminDashoard/Waitlist";
 
 function MainComponent({ user }) {

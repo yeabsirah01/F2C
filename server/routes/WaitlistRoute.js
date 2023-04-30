@@ -2,54 +2,18 @@ const express = require("express");
 const router = express.Router();
 const Waitlist = require("../models/Waitlist");
 const User = require("../models/User");
+const {
+  addToWaitlist,
+  getWaitlist,
+  updatewaitlist,
+} = require("../controllers/waitlist");
 
-// Add user to waitlist
-router.post("/", async (req, res) => {
-  try {
-    const waitlist = new Waitlist({
-      user: req.body.user,
-    });
-    const savedWaitlist = await waitlist.save();
-    res.send(savedWaitlist);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
-
-// Get waitlist
-router.get("/", async (req, res) => {
-  try {
-    const waitlist = await Waitlist.find().populate("user");
-    res.send(waitlist);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
+const authorizationMiddleware = require("./../middleware/authorization");
+const checkContentType = require("./../middleware/checkContentType");
+// Add user to waitlist, get waitlisted user
+router.route("/").post(authorizationMiddleware, addToWaitlist).get(getWaitlist);
 
 // Update waitlist status
-router.put("/:id", async (req, res) => {
-  try {
-    const waitlist = await Waitlist.findByIdAndUpdate(
-      req.params.id,
-      { status: req.body.status },
-      { new: true }
-    ).populate("user");
-
-    if (waitlist.status === "approved") {
-      await User.findByIdAndUpdate(
-        waitlist.user.id,
-        { role: "Farmer" },
-        { new: true }
-      );
-      console.log(waitlist.user);
-    } else if (waitlist.status === "rejected") {
-      console.log("Waitlist status has been updated to rejected.");
-    }
-
-    res.send(waitlist);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
+router.route("/:id").put(updatewaitlist);
 
 module.exports = router;

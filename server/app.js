@@ -24,8 +24,10 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization, Content-Type"
   );
+  res.header("Content-Type", "multipart/form-data");
+
   res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
   next();
 });
@@ -71,6 +73,7 @@ app.use(function (req, res, next) {
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   );
+  res.header("Content-Type", "multipart/form-data");
   res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
   next();
 });

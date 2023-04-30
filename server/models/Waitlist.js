@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const User = require("./User");
 
 const waitlistSchema = new mongoose.Schema({
   user: {
@@ -6,11 +7,26 @@ const waitlistSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  nationalId: {
+  nationalIdNumber: {
     type: String,
     // required: true,
   },
-  license: {
+  farmingLicenseNumber: {
+    type: String,
+  },
+  letter: {
+    type: String,
+  },
+  farmSamplePhoto: {
+    type: String,
+  },
+  nationalIDPhoto: {
+    type: String,
+  },
+  farmingLicense: {
+    type: String,
+  },
+  profilePicture: {
     type: String,
   },
   status: {
