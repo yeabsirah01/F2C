@@ -18,6 +18,7 @@ import Header from "./layout/Header";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import FarmerApplicationForm from "../pages/waitlist/FarmerForm";
 import WaitlistTable from "./../pages/Dashboard/AdminDashoard/Waitlist";
+import UpdateUserInfo from "../pages/Dashboard/UserDashboard/UpdateUserInfo";
 
 function MainComponent({ user }) {
   const dispatch = useDispatch();
@@ -38,6 +39,7 @@ function MainComponent({ user }) {
           <Route path="/" element={<Home />} />
           <Route path="/dashboard/*" element={<Dashboard />}>
             <Route path="create" element={<CreateProduct />} />
+            <Route path="updateuserinfo" element={<UpdateUserInfo />} />
             <Route path="wait" element={<WaitlistTable />} />
             <Route path="profile" element={<Profile />} />
           </Route>

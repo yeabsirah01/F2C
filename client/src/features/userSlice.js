@@ -19,6 +19,7 @@ const userSlice = createSlice({
       axiosConfig.interceptors.request.eject(interceptor);
       interceptor = axiosConfig.interceptors.request.use(
         (config) => {
+          localStorage.setItem("cookie", action.payload.token);
           config.headers["Authorization"] = `Bearer ${action.payload.token}`;
           return config;
         },

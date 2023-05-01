@@ -77,6 +77,7 @@ import { Route, Routes } from "react-router-dom";
 import CreateProduct from "./../../pages/createProduct/index";
 import Profile from "./../../pages/profile";
 import WaitlistTable from "./AdminDashoard/Waitlist";
+import UpdateUserInfo from "./UserDashboard/UpdateUserInfo";
 
 function Dashboard({ children }) {
   const { role, firstName } = useSelector((state) => state.user);
@@ -91,7 +92,7 @@ function Dashboard({ children }) {
 
           <div className="sidebar">
             <ul className="navItems">
-              <NavItem Icon={AiFillHome} label="Home" to="/dashboard/" />
+              <NavItem Icon={AiFillHome} label="Update" to="updateuserinfo" />
 
               {role === "Farmer" && (
                 <>
@@ -123,6 +124,11 @@ function Dashboard({ children }) {
     >
       <Routes>
         <Route exact path="/create" element={<CreateProduct />}></Route>
+        <Route
+          exact
+          path="/updateuserinfo"
+          element={<UpdateUserInfo />}
+        ></Route>
         <Route exact path="/waitlist" element={<WaitlistTable />}></Route>
         <Route exact path="/profile" element={<Profile />}></Route>
       </Routes>

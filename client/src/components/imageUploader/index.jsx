@@ -1,32 +1,29 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import "./styles.css";
+import imagePlaceholder from "../../assets/image placeholder.jpg";
+import { useEffect } from "react";
 
-const ImageUploader = ({ onChange }) => {
-  const [preview, setPreview] = useState(null);
-
-  const handleImageChange = async (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      onChange(reader.result);
-      setPreview(reader.result);
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
-    }
-  };
-
+const ImageUploader = ({ onChange, image }) => {
+  const [preview, setPreview] = useState(imagePlaceholder);
+  useEffect(() => {
+    if (image) setPreview(`http://localhost:5000/${image}`);
+  }, [image]);
   return (
-    <div>
-      <input type="file" onChange={handleImageChange} />
-      {preview && (
-        <img
-          src={preview}
-          alt="Preview"
-          style={{ maxWidth: "100%", width: "50px", height: "auto" }}
-        />
-      )}
+    <div className="imageUploader">
+      <div className="imageContainer">
+        <img src={preview} alt="" crossOrigin="cross-origin" />
+      </div>
+      <label htmlFor="imageInput">Upload Product Image</label>
+      <input
+        type="file"
+        name=""
+        id="imageInput"
+        onChange={(e) => {
+          const src = URL.createObjectURL(e.target.files[0]);
+          setPreview(src);
+          onChange(e.target.files[0]);
+        }}
+      />
     </div>
   );
 };

@@ -12,21 +12,46 @@ import { useDispatch, useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axiosConfig from "../../axiosConfig";
 
 function AvatarIcon() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { role, firstName } = useSelector((state) => state.user);
+  const { role, firstName, profilePicture } = useSelector(
+    (state) => state.user
+  );
+  const [avatarUrl, setAvatarUrl] = useState(
+    "http://localhost:5000/1682238562698-DABU3586.JPEG"
+  );
+  const styles = {
+    borderRadius: "50%",
+    backgroundColor: "#ccc",
+    width: "50px",
+    height: "50px",
+    position: "relative",
+    overflow: "hidden",
+  };
+
+  const imageStyles = {
+    borderRadius: "50%",
+    objectFit: "cover",
+    objectPosition: "50% 10%",
+    width: "100%",
+    height: "100%",
+  };
   return (
     <Menu shadow="md" width={200}>
       <Menu.Target>
         <div>
-          <Avatar
-            radius="xl"
-            size="lg"
-            color="green"
-            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
-          />
+          <div style={styles}>
+            <img
+              src={`http://localhost:5000/${profilePicture}`}
+              alt="Avatar"
+              style={imageStyles}
+              crossOrigin="cross-origin"
+            />
+          </div>
         </div>
       </Menu.Target>
 

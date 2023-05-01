@@ -105,12 +105,55 @@ import axiosConfig from "../../../axiosConfig";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Table, Button, LoadingOverlay } from "@mantine/core";
+import { Table, Button, LoadingOverlay, Modal, Image } from "@mantine/core";
 // import axiosConfig from "./axiosConfig";
 
 const WaitlistTable = () => {
   const [waitlist, setWaitlist] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [modalLetterText, setModalLetterText] = useState("");
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalImageSrc, setModalImageSrc] = useState("");
+  const [modalLetter, setModalLetter] = useState("");
+
+  const handleFarmerClick = async (user) => {
+    setIsLoading(true);
+    try {
+      const imageResponse = await axiosConfig.get(`/waitlist/${user.imageId}`);
+      setModalImageSrc(imageResponse.data);
+      setModalOpen(true);
+      if (user.applicationLetterId) {
+        const letterResponse = await axiosConfig.get(
+          `/waitlist/${user.applicationLetterId}`
+        );
+        setModalLetter(letterResponse.data);
+      } else {
+        setModalLetter("");
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+    setModalImageSrc("");
+    setModalLetter("");
+  };
+
+  const handleImageClick = (imageSrc) => {
+    setModalImageSrc(imageSrc);
+    setModalOpen(true);
+  };
+
+  const handleLetterClick = (letterText) => {
+    setModalLetterText(letterText);
+    setModalOpen(true);
+  };
 
   useEffect(() => {
     const getWaitlist = async () => {
@@ -199,12 +242,92 @@ const WaitlistTable = () => {
 
   return (
     <>
-      <Table striped highlightOnHover captionSide="bottom">
-        <caption>Some elements from periodic table</caption>
-        <thead>{ths}</thead>
-        <tbody>{rows}</tbody>
-        <tfoot>{ths}</tfoot>
-      </Table>
+      <div>
+        <h2>Waitlist</h2>
+        <LoadingOverlay visible={isLoading} />
+        <Table striped>
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {waitlist.map((item) => (
+              <tr key={item._id}>
+                <td
+                  onClick={() => handleFarmerClick(item.user)}
+                  // onMouseLeave={() => setModalOpen(false)}
+                >
+                  {item.user.firstName}
+                </td>
+                <td>{item.status}</td>
+                <td>
+                  <img
+                    src={`http://localhost:5000/${item.profilePicture}`}
+                    alt="My pic "
+                    crossOrigin="cross-origin"
+                    width={40}
+                  />
+                </td>
+                <td>
+                  <img
+                    src={`http://localhost:5000/${item.farmingLicense}`}
+                    alt="My pic "
+                    crossOrigin="cross-origin"
+                    width={40}
+                  />
+                </td>
+                <td>
+                  <img
+                    src={`http://localhost:5000/${item.nationalIDPhoto}`}
+                    alt="My pic "
+                    crossOrigin="cross-origin"
+                    width={40}
+                  />
+                </td>
+                <td>
+                  <img
+                    src={`http://localhost:5000/${item.farmSamplePhoto}`}
+                    alt="My pic "
+                    crossOrigin="cross-origin"
+                    width={40}
+                  />
+                </td>
+
+                <td>
+                  {item.status === "pending" && (
+                    <>
+                      <Button onClick={() => handleApprove(item._id)}>
+                        Approve
+                      </Button>
+                      <Button onClick={() => handleReject(item._id)}>
+                        Reject
+                      </Button>
+                    </>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+
+        <Modal show={modalOpen} onHide={() => setModalOpen(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Modal Title</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {modalImageSrc && <img src={modalImageSrc} alt="Modal Image" />}
+            {modalLetterText && <p>{modalLetterText}</p>}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setModalOpen(false)}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
     </>
   );
 };
