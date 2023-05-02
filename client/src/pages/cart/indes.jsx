@@ -14,6 +14,18 @@ import { Modal } from "@mantine/core";
 
 const Cart = ({ onClose }) => {
   const { products, totalCartAmount } = useSelector((state) => state.cart);
+  console.log(products);
+
+  const newItemsArray = products.map((product) => {
+    const item = {
+      ItemId: product._id,
+      ItemName: product.name,
+      UnitPrice: product.price,
+      Quantity: product.quantity,
+    };
+    return item;
+  });
+
   const location = useLocation();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -31,11 +43,23 @@ const Cart = ({ onClose }) => {
     }
     // eslint-disable-next-line
   }, [location.search, dispatch]);
+
   const checkOut = async () => {
     try {
-      const { data } = await axiosConfig.post("/products/checkout", {
-        products,
-      });
+      const { data } = await axiosConfig
+        .post("/products/checkout", {
+          newItemsArray,
+        })
+        .then(function (response) {
+          if (response.data) {
+            window.location = response.data.redirectUrl;
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      console.log(data);
+      console.log(data);
       window.location = data.payment_url;
     } catch (error) {
       toast.error(error?.response?.data?.msg || "Something went wrong");

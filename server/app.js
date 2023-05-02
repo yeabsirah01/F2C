@@ -17,6 +17,8 @@ const xss = require("xss-clean");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+// app.use(bodyParser.json({ limit: "1mb" }));
+// app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 //Routes
 app.use(function (req, res, next) {

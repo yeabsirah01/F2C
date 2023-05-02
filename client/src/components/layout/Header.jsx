@@ -48,7 +48,7 @@ const useStyles = createStyles((theme) => ({
     textDecoration: "none",
     color: theme.colorScheme === "dark" ? theme.white : theme.black,
     fontWeight: 500,
-    fontSize: theme.fontSizes.sm,
+    fontSize: theme.fontSizes.lt,
 
     [theme.fn.smallerThan("sm")]: {
       height: rem(42),
@@ -188,7 +188,7 @@ function AppHeader() {
   return (
     <Header height={60} p="xs">
       <Box pb={0}>
-        <Header height={60} px="md" bg="#46ff772e">
+        <Header height={70} px="md" bg="#77AB59">
           <Group position="apart" sx={{ height: "100%" }}>
             <img
               src={"./Logo.png"}

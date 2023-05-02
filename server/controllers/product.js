@@ -79,11 +79,13 @@ const updateProduct = async (req, res) => {
 };
 
 const checkOut = async (req, res) => {
+  stripe.setApiKey(process.env.STRIPE_KEY);
+
   const session = await stripe.checkout.sessions.create({
     line_items: req.body.products.map((p) => {
       return {
         price_data: {
-          currency: "inr",
+          currency: "etb",
           product_data: {
             name: p.name,
           },
@@ -96,6 +98,7 @@ const checkOut = async (req, res) => {
     success_url: `http://localhost:3000/cart?clear_cart=true`,
     cancel_url: `http://localhost:3000/cart`,
   });
+
   res.json({ payment_url: session.url });
 };
 
