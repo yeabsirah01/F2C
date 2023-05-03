@@ -78,6 +78,7 @@ import CreateProduct from "./../../pages/createProduct/index";
 import Profile from "./../../pages/profile";
 import WaitlistTable from "./AdminDashoard/Waitlist";
 import UpdateUserInfo from "./UserDashboard/UpdateUserInfo";
+import AllUsers from "./AdminDashoard/AllUsers";
 
 function Dashboard({ children }) {
   const { role, firstName } = useSelector((state) => state.user);
@@ -107,6 +108,7 @@ function Dashboard({ children }) {
               {role === "Admin" && (
                 <>
                   <NavItem Icon={MdAddCircle} label="Waitlist" to="waitlist" />
+                  <NavItem Icon={MdAddCircle} label="Allusers" to="allusers" />
                 </>
               )}
               <NavItem Icon={FaShoppingCart} label="Cart" to="cart" />
@@ -130,6 +132,7 @@ function Dashboard({ children }) {
           element={<UpdateUserInfo />}
         ></Route>
         <Route exact path="/waitlist" element={<WaitlistTable />}></Route>
+        <Route exact path="/allusers" element={<AllUsers />}></Route>
         <Route exact path="/profile" element={<Profile />}></Route>
       </Routes>
     </AppShell>

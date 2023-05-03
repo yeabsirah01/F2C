@@ -154,7 +154,7 @@ const WaitlistTable = () => {
     setModalLetterText(letterText);
     setModalOpen(true);
   };
-
+  const token = `Bearer ${localStorage.getItem("cookie")}`;
   useEffect(() => {
     const getWaitlist = async () => {
       setIsLoading(true);
@@ -162,6 +162,7 @@ const WaitlistTable = () => {
         const response = await axiosConfig.get("/waitlist");
         if (response.status === 200) {
           setWaitlist(response.data);
+          console.log(response.data);
         }
       } catch (error) {
         console.error(error);
@@ -192,6 +193,7 @@ const WaitlistTable = () => {
     }
   };
 
+  console.log(waitlist);
   const handleReject = async (waitlistId) => {
     try {
       const response = await axiosConfig.put(`/waitlist/${waitlistId}`, {
@@ -219,31 +221,31 @@ const WaitlistTable = () => {
     </tr>
   );
 
-  const rows = waitlist
-    .slice()
-    .reverse()
-    .map((element) => (
-      <tr key={element.user.firstName}>
-        <td>{element.user.firstName}</td>
-        <td>{element.status}</td>
-        <td>{element.symbol}</td>
-        <td>
-          {element.status === "pending" && (
-            <>
-              <button onClick={() => handleApprove(element._id)}>
-                Approve
-              </button>
-              <button onClick={() => handleReject(element._id)}>Reject</button>
-            </>
-          )}
-        </td>
-      </tr>
-    ));
-
+  // const rows = waitlist
+  //   .slice()
+  //   .reverse()
+  //   .map((element) => (
+  //     <tr key={element.user.firstName}>
+  //       <td>{element.user.firstName}</td>
+  //       <td>{element.status}</td>
+  //       <td>{element.symbol}</td>
+  //       <td>
+  //         {element.status === "pending" && (
+  //           <>
+  //             <button onClick={() => handleApprove(element._id)}>
+  //               Approve
+  //             </button>
+  //             <button onClick={() => handleReject(element._id)}>Reject</button>
+  //           </>
+  //         )}
+  //       </td>
+  //     </tr>
+  //   ));
+  console.log(waitlist);
   return (
     <>
       <div>
-        <h2>Waitlist</h2>
+        <h2>Waitlist do some sorting as you do to products</h2>
         <LoadingOverlay visible={isLoading} />
         <Table striped>
           <thead>
@@ -257,8 +259,8 @@ const WaitlistTable = () => {
             {waitlist.map((item) => (
               <tr key={item._id}>
                 <td
-                  onClick={() => handleFarmerClick(item.user)}
-                  // onMouseLeave={() => setModalOpen(false)}
+                // onClick={() => handleFarmerClick(item.user)}
+                // onMouseLeave={() => setModalOpen(false)}
                 >
                   {item.user.firstName}
                 </td>
@@ -313,7 +315,7 @@ const WaitlistTable = () => {
           </tbody>
         </Table>
 
-        <Modal show={modalOpen} onHide={() => setModalOpen(false)}>
+        {/* <Modal show={modalOpen} onHide={() => setModalOpen(false)}>
           <Modal.Header closeButton>
             <Modal.Title>Modal Title</Modal.Title>
           </Modal.Header>
@@ -326,7 +328,7 @@ const WaitlistTable = () => {
               Close
             </Button>
           </Modal.Footer>
-        </Modal>
+        </Modal> */}
       </div>
     </>
   );

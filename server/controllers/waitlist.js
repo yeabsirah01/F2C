@@ -56,7 +56,8 @@ const addToWaitlist = async (req, res) => {
 const getWaitlist = async (req, res) => {
   try {
     const waitlist = await Waitlist.find().populate("user");
-    res.send(waitlist);
+    await res.send(waitlist);
+    // console.log(waitlist);
   } catch (error) {
     res.status(400).send(error);
   }

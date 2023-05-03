@@ -11,7 +11,10 @@ const {
 const authorizationMiddleware = require("./../middleware/authorization");
 const checkContentType = require("./../middleware/checkContentType");
 // Add user to waitlist, get waitlisted user
-router.route("/").post(authorizationMiddleware, addToWaitlist).get(getWaitlist);
+router
+  .route("/")
+  .post(authorizationMiddleware, addToWaitlist)
+  .get(authorizationMiddleware, getWaitlist);
 
 // Update waitlist status
 router.route("/:id").put(updatewaitlist);

@@ -29,9 +29,11 @@ const FarmerApplicationForm = () => {
     formData.append("farmingLicense", farmingLicense);
 
     // console.log(token);
+    const token = `Bearer ${localStorage.getItem("cookie")}`;
     const config = {
       headers: {
         "content-type": "multipart/form-data",
+        Authorization: token,
       },
     };
     try {
