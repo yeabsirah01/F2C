@@ -1,7 +1,7 @@
 import "./styles.css";
 import { SelectInput } from "../inputs";
 import Button from "../button";
-import { Form, Formik } from "formik";
+import { Form, Formik, Field } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { addProduct, removeProduct } from "../../features/cartSlice";
 import noImage from "../../assets/no-image.png";
 import axiosConfig from "../../axiosConfig";
+import { NumberInput } from "@mantine/core";
 
 const weights = [
   "1 KG",
@@ -35,19 +36,17 @@ const ProductCard = ({ product, cartItem, deleteProduct }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const addToCart = (formData) => {
+    console.log(formData);
     const productInCart = products.find((p) => p._id === product._id);
-    if (+formData.quantity.split(" ")[0] > +product.stock) {
+    if (+formData.quantity > +product.stock) {
       toast.error("Don't have enough stock");
     } else if (
       productInCart &&
-      +productInCart.quantity + +formData.quantity.split(" ")[0] >
-        +product.stock
+      +productInCart.quantity + +formData.quantity > +product.stock
     ) {
       toast.error("Don't have enough stock");
     } else {
-      dispatch(
-        addProduct({ ...product, quantity: formData.quantity.split(" ")[0] })
-      );
+      dispatch(addProduct({ ...product, quantity: formData.quantity }));
       toast.success("Product added to cart");
     }
   };
@@ -101,19 +100,26 @@ const ProductCard = ({ product, cartItem, deleteProduct }) => {
           </>
         ) : (
           <Formik
-            initialValues={{ quantity: "select" }}
+            initialValues={{ quantity: "" }}
             validationSchema={validationSchema}
             onSubmit={addToCart}
           >
-            {() => (
-              <Form className="form">
-                <SelectInput
-                  placeholder="Select Quantity"
-                  name="quantity"
-                  options={weights}
-                  size={6}
-                />
-                <Button label="Add to cart" size={6} />
+            {({ values, errors, touched, handleSubmit, setFieldValue }) => (
+              <Form className="" onSubmit={handleSubmit}>
+                <Field name="quantity">
+                  {({ field }) => (
+                    <NumberInput
+                      {...field}
+                      label="Quantity"
+                      placeholder="Enter Quantity"
+                      min={1}
+                      max={10}
+                      onChange={(value) => setFieldValue("quantity", value)}
+                      error={touched.quantity && errors.quantity}
+                    />
+                  )}
+                </Field>
+                <Button label="Add to cart" size={6} type="submit" />
               </Form>
             )}
           </Formik>

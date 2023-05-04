@@ -102,58 +102,16 @@ import axiosConfig from "../../../axiosConfig";
 // };
 
 // export default WaitlistTable;
-
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Table, Button, LoadingOverlay, Modal, Image } from "@mantine/core";
-// import axiosConfig from "./axiosConfig";
 
 const WaitlistTable = () => {
   const [waitlist, setWaitlist] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedText, setSelectedText] = useState(null);
 
-  const [modalLetterText, setModalLetterText] = useState("");
-
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalImageSrc, setModalImageSrc] = useState("");
-  const [modalLetter, setModalLetter] = useState("");
-
-  const handleFarmerClick = async (user) => {
-    setIsLoading(true);
-    try {
-      const imageResponse = await axiosConfig.get(`/waitlist/${user.imageId}`);
-      setModalImageSrc(imageResponse.data);
-      setModalOpen(true);
-      if (user.applicationLetterId) {
-        const letterResponse = await axiosConfig.get(
-          `/waitlist/${user.applicationLetterId}`
-        );
-        setModalLetter(letterResponse.data);
-      } else {
-        setModalLetter("");
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleModalClose = () => {
-    setModalOpen(false);
-    setModalImageSrc("");
-    setModalLetter("");
-  };
-
-  const handleImageClick = (imageSrc) => {
-    setModalImageSrc(imageSrc);
-    setModalOpen(true);
-  };
-
-  const handleLetterClick = (letterText) => {
-    setModalLetterText(letterText);
-    setModalOpen(true);
-  };
   const token = `Bearer ${localStorage.getItem("cookie")}`;
   useEffect(() => {
     const getWaitlist = async () => {
@@ -162,7 +120,6 @@ const WaitlistTable = () => {
         const response = await axiosConfig.get("/waitlist");
         if (response.status === 200) {
           setWaitlist(response.data);
-          console.log(response.data);
         }
       } catch (error) {
         console.error(error);
@@ -193,7 +150,6 @@ const WaitlistTable = () => {
     }
   };
 
-  console.log(waitlist);
   const handleReject = async (waitlistId) => {
     try {
       const response = await axiosConfig.put(`/waitlist/${waitlistId}`, {
@@ -212,41 +168,27 @@ const WaitlistTable = () => {
     }
   };
 
-  const ths = (
-    <tr>
-      <th>Element position</th>
-      <th>Element status</th>
-      <th>Symbol</th>
-      <th>Atomic mass</th>
-    </tr>
-  );
+  const handleImageClick = (imageSrc) => {
+    setSelectedImage(imageSrc);
+  };
 
-  // const rows = waitlist
-  //   .slice()
-  //   .reverse()
-  //   .map((element) => (
-  //     <tr key={element.user.firstName}>
-  //       <td>{element.user.firstName}</td>
-  //       <td>{element.status}</td>
-  //       <td>{element.symbol}</td>
-  //       <td>
-  //         {element.status === "pending" && (
-  //           <>
-  //             <button onClick={() => handleApprove(element._id)}>
-  //               Approve
-  //             </button>
-  //             <button onClick={() => handleReject(element._id)}>Reject</button>
-  //           </>
-  //         )}
-  //       </td>
-  //     </tr>
-  //   ));
-  console.log(waitlist);
+  const handleCloseModal = () => {
+    setSelectedImage(null);
+    setSelectedText(null);
+  };
+
+  const handleTextClick = (text) => {
+    setSelectedText(text);
+  };
+
   return (
     <>
       <div>
         <h2>Waitlist do some sorting as you do to products</h2>
-        <LoadingOverlay visible={isLoading} />
+        <LoadingOverlay
+          loaderProps={{ size: "sm", color: "green", variant: "bars" }}
+          visible={isLoading}
+        />
         <Table striped>
           <thead>
             <tr>
@@ -258,44 +200,64 @@ const WaitlistTable = () => {
           <tbody>
             {waitlist.map((item) => (
               <tr key={item._id}>
-                <td
-                // onClick={() => handleFarmerClick(item.user)}
-                // onMouseLeave={() => setModalOpen(false)}
-                >
-                  {item.user.firstName}
-                </td>
+                <td>{item.user.firstName}</td>
                 <td>{item.status}</td>
                 <td>
                   <img
                     src={`http://localhost:5000/${item.profilePicture}`}
-                    alt="My pic "
+                    alt="My pic"
                     crossOrigin="cross-origin"
                     width={40}
+                    onClick={() =>
+                      handleImageClick(
+                        `http://localhost:5000/${item.profilePicture}`
+                      )
+                    }
                   />
                 </td>
                 <td>
                   <img
                     src={`http://localhost:5000/${item.farmingLicense}`}
-                    alt="My pic "
+                    alt="My pic"
                     crossOrigin="cross-origin"
                     width={40}
+                    onClick={() =>
+                      handleImageClick(
+                        `http://localhost:5000/${item.farmingLicense}`
+                      )
+                    }
                   />
                 </td>
                 <td>
                   <img
                     src={`http://localhost:5000/${item.nationalIDPhoto}`}
-                    alt="My pic "
+                    alt="My pic"
                     crossOrigin="cross-origin"
                     width={40}
+                    onClick={() =>
+                      handleImageClick(
+                        `http://localhost:5000/${item.nationalIDPhoto}`
+                      )
+                    }
                   />
                 </td>
                 <td>
                   <img
                     src={`http://localhost:5000/${item.farmSamplePhoto}`}
-                    alt="My pic "
+                    alt="My pic"
                     crossOrigin="cross-origin"
                     width={40}
+                    onClick={() =>
+                      handleImageClick(
+                        `http://localhost:5000/${item.farmSamplePhoto}`
+                      )
+                    }
                   />
+                </td>
+                <td>
+                  <button onClick={() => handleTextClick(item.letter)}>
+                    click
+                  </button>
                 </td>
 
                 <td>
@@ -315,20 +277,31 @@ const WaitlistTable = () => {
           </tbody>
         </Table>
 
-        {/* <Modal show={modalOpen} onHide={() => setModalOpen(false)}>
-          <Modal.Header closeButton>
-            <Modal.Title>Modal Title</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {modalImageSrc && <img src={modalImageSrc} alt="Modal Image" />}
-            {modalLetterText && <p>{modalLetterText}</p>}
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={() => setModalOpen(false)}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal> */}
+        {selectedImage && (
+          <Modal
+            opened={true}
+            onClose={handleCloseModal}
+            title="Image"
+            size="xl"
+          >
+            <img
+              alt={"modal"}
+              src={selectedImage}
+              fit="contain"
+              crossOrigin="cross-origin"
+            />
+          </Modal>
+        )}
+        {selectedText && (
+          <Modal
+            opened={true}
+            onClose={handleCloseModal}
+            title="Image"
+            size="xl"
+          >
+            <p>{selectedText}</p>
+          </Modal>
+        )}
       </div>
     </>
   );

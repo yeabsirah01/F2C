@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import { Table, Input, Button } from "@mantine/core";
 import axiosConfig from "../../../axiosConfig";
 
 const AllUsers = () => {
@@ -28,23 +30,32 @@ const AllUsers = () => {
 
   return (
     <div>
-      <input type="text" placeholder="Search by name" onChange={handleSearch} />
-      <table>
+      <Input
+        label="Search by name"
+        placeholder="Type here"
+        value={searchTerm}
+        onChange={handleSearch}
+      />
+
+      <Table>
         <thead>
           <tr>
             <th>Name</th>
             <th>Email</th>
           </tr>
         </thead>
+
         <tbody>
           {filteredUsers.map((user) => (
             <tr key={user._id}>
-              <td>{user.firstName}</td>
+              <td>
+                <Link to={`/dashboard/user/${user._id}`}>{user.firstName}</Link>
+              </td>
               <td>{user.email}</td>
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
     </div>
   );
 };

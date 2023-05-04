@@ -20,7 +20,7 @@ function Loading({ isLoading }) {
           }}
         >
           {/* <Loader color="green" variant="bars" /> */}
-          <Loader />
+          <Loader color="green" variant="bars" />
         </div>
       )}
     </>

@@ -186,7 +186,11 @@ function AppHeader() {
   }
 
   return (
-    <Header height={60} p="xs">
+    <Header
+      height={60}
+      p="xs"
+      style={{ position: "fixed", top: 0, left: 0, right: 0 }}
+    >
       <Box pb={0}>
         <Header height={70} px="md" bg="#77AB59">
           <Group position="apart" sx={{ height: "100%" }}>

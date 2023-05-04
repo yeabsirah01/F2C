@@ -51,33 +51,39 @@ import ProductCard from "./productCard";
 import { Slider, Select, RangeSlider } from "@mantine/core";
 
 const ProductCards = ({ products, setProducts }) => {
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState(products);
   const [filterCategory, setFilterCategory] = useState("select");
   const [filterPriceRange, setFilterPriceRange] = useState([0, 100]);
   const [filterDate, setFilterDate] = useState("newest");
+  const [priceFilterActive, setPriceFilterActive] = useState(false);
 
-  const filter = useCallback((category, priceRange, date, products) => {
-    let data = [...products];
+  const filter = useCallback(
+    (category, priceRange, date, products) => {
+      let data = [...products];
 
-    // Filter by category
-    if (category !== "select") {
-      data = data.filter((p) => p.category === category);
-    }
+      // Filter by category
+      if (category !== "select") {
+        data = data.filter((p) => p.category === category);
+      }
 
-    // Filter by price range
-    data = data.filter(
-      (p) => p.price >= priceRange[0] && p.price <= priceRange[1]
-    );
+      // Filter by price range
+      if (priceFilterActive) {
+        data = data.filter(
+          (p) => p.price >= priceRange[0] && p.price <= priceRange[1]
+        );
+      }
 
-    // Sort by date
-    if (date === "newest") {
-      data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    } else {
-      data.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-    }
+      // Sort by date
+      if (date === "newest") {
+        data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      } else {
+        data.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+      }
 
-    setFilteredProducts(data);
-  }, []);
+      setFilteredProducts(data);
+    },
+    [priceFilterActive]
+  );
 
   useEffect(() => {
     filter(filterCategory, filterPriceRange, filterDate, products);
@@ -98,7 +104,7 @@ const ProductCards = ({ products, setProducts }) => {
         />
         <div style={{ display: "flex", alignItems: "center" }}>
           <div style={{ marginRight: "16px" }}>
-            Price range: ${filterPriceRange[0]} - ${filterPriceRange[1]}
+            Price range: {filterPriceRange[0]} Birr - {filterPriceRange[1]} Birr
           </div>
           <RangeSlider
             style={{ flexGrow: 1 }}
@@ -106,7 +112,10 @@ const ProductCards = ({ products, setProducts }) => {
             max={100}
             step={1}
             defaultValue={filterPriceRange}
-            onChange={(value) => setFilterPriceRange(value)}
+            onChange={(value) => {
+              setPriceFilterActive(true);
+              setFilterPriceRange(value);
+            }}
           />
         </div>
         <Select

@@ -8,7 +8,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { VscChromeClose } from "react-icons/vsc";
 import { SiShopify } from "react-icons/si";
 import NavItem from "./navItem";
-import { useState } from "react";
+import React, { useState } from "react";
 import { logout } from "../../features/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 // const Dashboard = ({ children }) => {
@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 //     setIsOpen(!isOpen);
 //   };
 //   const { role, firstName } = useSelector((state) => state.user);
-//   const dispatch = useDispatch();
+
 //   return (
 //     <div className={isOpen ? "layout open" : "layout"}>
 //       <div className="sidebar">
@@ -63,78 +63,104 @@ import { useDispatch, useSelector } from "react-redux";
 //     </div>
 //   );
 // };
-
+import { Link } from "react-router-dom";
 import {
   AppShell,
-  Header,
   Navbar,
-  Footer,
   MediaQuery,
   Burger,
   ScrollArea,
 } from "@mantine/core";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import CreateProduct from "./../../pages/createProduct/index";
 import Profile from "./../../pages/profile";
 import WaitlistTable from "./AdminDashoard/Waitlist";
 import UpdateUserInfo from "./UserDashboard/UpdateUserInfo";
 import AllUsers from "./AdminDashoard/AllUsers";
+import UserDetails from "./AdminDashoard/UserDetails";
+// import { useSelector } from "react-redux";
+
+function Breadcrumbs() {
+  const { pathname } = useLocation();
+  const parts = pathname.split("/").filter((part) => part !== "");
+
+  return (
+    <div>
+      {parts.map((part, index) => (
+        <span key={index}>
+          {index > 0 && " > "}
+          <a href={`/${parts.slice(0, index + 1).join("/")}`}>{part}</a>
+        </span>
+      ))}
+    </div>
+  );
+}
 
 function Dashboard({ children }) {
   const { role, firstName } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const [opened, setOpened] = useState(false);
+  const [opened, setOpened] = React.useState(false);
 
   return (
     <AppShell
       navbar={
         <Navbar width={{ base: 200 }} hiddenBreakpoint="sm" hidden={!opened}>
           {/* Navbar content */}
-
           <div className="sidebar">
             <ul className="navItems">
-              <NavItem Icon={AiFillHome} label="Update" to="updateuserinfo" />
-
+              <li>
+                <Burger opened={opened} onClick={() => setOpened(!opened)} />
+              </li>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/dashboard/updateuserinfo">My Profile</Link>
+              </li>
               {role === "Farmer" && (
                 <>
-                  <NavItem
-                    Icon={MdAddCircle}
-                    label="Create product"
-                    to="create"
-                  />
-                  <NavItem Icon={FaUserCircle} label="Profile" to="profile" />
+                  <li>
+                    <Link to="/dashboard/create">Create product</Link>
+                  </li>
+                  <li>
+                    <Link to="/dashboard/profile">Profile</Link>
+                  </li>
                 </>
               )}
               {role === "Admin" && (
                 <>
-                  <NavItem Icon={MdAddCircle} label="Waitlist" to="waitlist" />
-                  <NavItem Icon={MdAddCircle} label="Allusers" to="allusers" />
+                  <li>
+                    <Link to="/dashboard/waitlist">Waitlist</Link>
+                  </li>
+                  <li>
+                    <Link to="/dashboard/users">All Users</Link>
+                  </li>
                 </>
               )}
-              <NavItem Icon={FaShoppingCart} label="Cart" to="cart" />
+              <li>
+                <Link to="/dashboard/cart">Cart</Link>
+              </li>
+              <li>
+                <button onClick={() => dispatch(logout())}>Logout</button>
+              </li>
             </ul>
-            <div className="logout">
-              <BiLogOutCircle
-                onClick={() => {
-                  dispatch(logout());
-                }}
-              />
-            </div>
           </div>
         </Navbar>
       }
     >
-      <Routes>
-        <Route exact path="/create" element={<CreateProduct />}></Route>
-        <Route
-          exact
-          path="/updateuserinfo"
-          element={<UpdateUserInfo />}
-        ></Route>
-        <Route exact path="/waitlist" element={<WaitlistTable />}></Route>
-        <Route exact path="/allusers" element={<AllUsers />}></Route>
-        <Route exact path="/profile" element={<Profile />}></Route>
-      </Routes>
+      <div>
+        <Breadcrumbs />
+      </div>
+      <div>
+        <Routes>
+          <Route exact path="/create" element={<CreateProduct />} />
+          <Route exact path="/profile" element={<Profile />} />
+          <Route exact path="/waitlist" element={<WaitlistTable />} />
+          <Route exact path="/users" element={<AllUsers />} />
+          <Route exact path="/updateuserinfo" element={<UpdateUserInfo />} />
+          <Route path="/user/:id" element={<UserDetails />} />
+        </Routes>
+      </div>
     </AppShell>
   );
 }
