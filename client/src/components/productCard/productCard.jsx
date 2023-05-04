@@ -116,6 +116,14 @@ const ProductCard = ({ product, cartItem, deleteProduct }) => {
                       max={10}
                       onChange={(value) => setFieldValue("quantity", value)}
                       error={touched.quantity && errors.quantity}
+                      formatter={(value) =>
+                        !Number.isNaN(parseFloat(value))
+                          ? `${value} KG`.replace(
+                              /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g,
+                              ","
+                            )
+                          : "KG "
+                      }
                     />
                   )}
                 </Field>

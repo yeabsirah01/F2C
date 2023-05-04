@@ -92,8 +92,10 @@ const ProductCards = ({ products, setProducts }) => {
   return (
     <div className="productCards">
       <div className="input" style={{ gridColumn: "1/-1" }}>
+        <p>Sort by</p>
         <Select
-          style={{ marginLeft: "auto", width: "350px" }}
+          label="Product Category"
+          style={{ marginLeft: "auto", width: "auto" }}
           placeholder="Filter by category"
           value={filterCategory}
           onChange={(value) => setFilterCategory(value)}
@@ -102,7 +104,7 @@ const ProductCards = ({ products, setProducts }) => {
             label: option,
           }))}
         />
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div>
           <div style={{ marginRight: "16px" }}>
             Price range: {filterPriceRange[0]} Birr - {filterPriceRange[1]} Birr
           </div>
@@ -119,7 +121,8 @@ const ProductCards = ({ products, setProducts }) => {
           />
         </div>
         <Select
-          style={{ marginLeft: "auto", width: "350px" }}
+          label="Date"
+          style={{ marginLeft: "auto", width: "auto" }}
           placeholder="Sort by date"
           value={filterDate}
           onChange={(value) => setFilterDate(value)}
@@ -129,16 +132,18 @@ const ProductCards = ({ products, setProducts }) => {
           ]}
         />
       </div>
-      {filteredProducts.map((product) => (
-        <ProductCard
-          product={product}
-          key={product._id}
-          deleteProduct={(id) => {
-            const newProducts = products.filter((p) => p._id !== id);
-            setProducts(newProducts);
-          }}
-        />
-      ))}
+      <div className="products">
+        {filteredProducts.map((product) => (
+          <ProductCard
+            product={product}
+            key={product._id}
+            deleteProduct={(id) => {
+              const newProducts = products.filter((p) => p._id !== id);
+              setProducts(newProducts);
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 };

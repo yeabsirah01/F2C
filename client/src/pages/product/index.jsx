@@ -145,6 +145,9 @@ const Product = () => {
         <h2 className="product__price">
           {product.price} ETB <span>({product.stock} KG Left)</span>
         </h2>
+        <h2 className="product__date">
+          {product.createdAt} <span>created day</span>
+        </h2>
         <div className="product__rating">
           <p>{averageReview}</p>
           <AiFillStar />

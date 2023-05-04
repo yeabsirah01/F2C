@@ -51,3 +51,20 @@
   font-weight: 500;
   color: var(--primary-color);
 }
+
+.productCards {
+  display: flex;
+  flex-direction: row;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  width: 80%;
+  padding-right: 15px;
+  margin-left: 30px;
+}
+
+.input {
+  width: 15%;
+}
